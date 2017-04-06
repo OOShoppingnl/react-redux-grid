@@ -20,7 +20,9 @@ var stateGetter = exports.stateGetter = function stateGetter(state, props, key, 
 
     if (props && props.reducerKeys) {
         if (typeof props.reducerKeys === 'string') {
-            return get(state[props.reducerKeys], key, entry);
+            var nestedInImmutable = typeof state.get === 'function';
+            var nestedState = nestedInImmutable ? state.get(props.reducerKeys) : state[props.reducerKeys];
+            return get(nestedState, key, entry);
         } else if (_typeof(props.reducerKeys) === 'object' && Object.keys(props.reducerKeys).length > 0 && props.reducerKeys[key]) {
 
             var dynamicKey = props.reducerKeys[key];
